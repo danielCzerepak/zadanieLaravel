@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Form;
+use Validator;
 
 class FormController extends Controller
 {
@@ -39,7 +40,7 @@ class FormController extends Controller
      */
     public function postCreateStepOne(Request $request)
     {
-        $validatedData = $request->validate([
+        $validatedData = Validator::make($request->all(), [
             'name' => 'required',
             'phone' => 'required|min:10|max:12',
             'surname' => 'required',
@@ -47,12 +48,11 @@ class FormController extends Controller
             'zgoda' => 'required|accepted'
         ]);
 
-        $form = new Form();
-        $form->fill($validatedData);
-        $request->session()->put('form', $form);
+        if ($validatedData->passes()) {
+            return response()->json(['success' => 'Added new records.']);
+        }
 
-
-        return redirect()->route('forms.create.step.two');
+        return response()->json(['error' => $validatedData->errors()->all()]);
     }
 
     /**

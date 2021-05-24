@@ -20,9 +20,6 @@
                             </ul>
                         </div>
                         @endif
-
-
-
                         <div class="form-group">
                             <label for="description">Napisz coś o sobie </label>
                             <textarea required type="textarea" id="description" value="{{{ $form->description ?? '' }}}" class="form-control" name="description"> </textarea>
